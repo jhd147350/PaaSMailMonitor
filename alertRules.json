@@ -1,0 +1,12 @@
+[
+	{
+		"id": 1,
+		"name": "jhd",
+		"ignore": false
+	},
+	{
+		"id": 2,
+		"name": "jhd01",
+		"ignore": true
+	}
+]
