@@ -1,12 +1,12 @@
 [
 	{
-		"id": 1,
-		"name": "jhd",
-		"ignore": false
+		"id": "CN:bmxcn.CYP.sampleApp : st_sampleApp ",
+		"countdown": 300,
+		"ignore": true
 	},
 	{
-		"id": 2,
-		"name": "jhd01",
-		"ignore": true
+		"id": "CN:bmxcn.CYP.estado.dotnetcore : st_runtime_down ",
+		"countdown": 310,
+		"ignore": false
 	}
 ]
