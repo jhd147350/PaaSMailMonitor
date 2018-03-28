@@ -60,6 +60,14 @@ public class App extends ApplicationWindow {
 		container = new Composite(parent, SWT.NONE);
 		container.setSize(500, 600);
 		container.setLayout(new BorderLayout(0, 0));
+		container.addMouseWheelListener(new MouseWheelListener() {
+
+			@Override
+			public void mouseScrolled(MouseEvent arg0) {
+				System.out.println(arg0.count);
+
+			}
+		});
 		{
 			Button btnStop = new Button(container, SWT.NONE);
 			btnStop.setLayoutData(BorderLayout.SOUTH);
@@ -69,19 +77,18 @@ public class App extends ApplicationWindow {
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
 					statrListen();
-
+					// TODO 只有获得焦点，滚动条才能响应鼠标滑轮去滚动
+					scrolledComposite.setFocus();
 				}
 
 				@Override
 				public void widgetDefaultSelected(SelectionEvent arg0) {
-					// TODO Auto-generated method stub
 
 				}
 			});
 		}
 
-		scrolledComposite = new ScrolledComposite(container,
-				SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+		scrolledComposite = new ScrolledComposite(container, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
 		scrolledComposite.setAlwaysShowScrollBars(true);
 		scrolledComposite.setLayout(new FillLayout());
 		// scrolledComposite.setBounds(20, 25, 230, 220);
@@ -99,15 +106,24 @@ public class App extends ApplicationWindow {
 
 			}
 		});
-		
-		scrolledComposite.addMouseWheelListener(new MouseWheelListener() {
-			
-			@Override
-			public void mouseScrolled(MouseEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		scrolledComposite.setFocus();
+
+		/*
+		 * scrolledComposite.addMouseWheelListener(new MouseWheelListener() {
+		 * 
+		 * @Override public void mouseScrolled(MouseEvent me) {
+		 * System.out.println("滑轮滚动时间"); System.out.println(me.count); } });
+		 */
+		// TODO 根本不需要自己去控制滚动条的位置，只要让滚动控件自己获得焦点即可。
+		/*
+		 * container.addMouseWheelListener(new MouseWheelListener() {
+		 * 
+		 * @Override public void mouseScrolled(MouseEvent arg0) {
+		 * System.out.println(arg0.count); //scrolledComposite.moveAbove();
+		 * //scrolledComposite.setFocus();
+		 * 
+		 * } });
+		 */
 
 		alertC = new Composite(scrolledComposite, SWT.NONE);
 		scrolledComposite.setContent(alertC);
@@ -230,64 +246,52 @@ public class App extends ApplicationWindow {
 	public void statrListen() {
 		System.out.println("开始监听");
 		add();
-		add();
-
 	}
 
 	public void add() {
+		Alert a = new Alert();
+		a.setId("ididididididididi");
+		a.setCountdown(70);
+		AlertItem alertItem = new AlertItem(needHandleC, a, alertC, scrolledComposite);
+		alertItem.startCountdown();
 
 		Runnable r = new Runnable() {
-
 			@Override
 			public void run() {
-				Composite c = new Composite(needHandleC, SWT.NONE);
-				RowLayout rl = new RowLayout(SWT.HORIZONTAL);
-				c.setLayout(rl);
-
-				Label lblNewLabel_1 = new Label(c, SWT.NONE);
-				lblNewLabel_1.setText("CN:bmxcn.CYP.estado.PHP : st_runtime_down -> ");
-
-				Button btnStop = new Button(c, SWT.NONE);
-				btnStop.setText("X");
-
-				btnStop.addSelectionListener(new SelectionListener() {
-
-					@Override
-					public void widgetSelected(SelectionEvent arg0) {
-						// TODO Auto-generated method stub
-						c.dispose();
-						alertC.pack();
-
-					}
-
-					@Override
-					public void widgetDefaultSelected(SelectionEvent arg0) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-
 				/*
+				 * Composite c = new Composite(needHandleC, SWT.NONE); RowLayout rl = new
+				 * RowLayout(SWT.HORIZONTAL); c.setLayout(rl);
+				 * 
+				 * Label lblNewLabel_1 = new Label(c, SWT.NONE);
+				 * lblNewLabel_1.setText("CN:bmxcn.CYP.estado.PHP : st_runtime_down -> ");
+				 * 
+				 * Button btnStop = new Button(c, SWT.NONE); btnStop.setText("X");
+				 * 
+				 * btnStop.addSelectionListener(new SelectionListener() {
+				 * 
+				 * @Override public void widgetSelected(SelectionEvent arg0) { c.dispose();
+				 * alertC.pack(); }
+				 * 
+				 * @Override public void widgetDefaultSelected(SelectionEvent arg0) { } });
+				 * 
 				 * for (int i = 0; i <= 60; i++) { try { Thread.sleep(1000); } catch
 				 * (InterruptedException e) { e.printStackTrace(); }
 				 * lblNewLabel_1.setText("CN:bmxcn.CYP.estado.PHP : st_runtime_down -> " + i +
-				 * "s"); }
+				 * "s"); alertC.pack();// 重新计算整个alert部分的大小 }
+				 * 
+				 * System.out.println("计时完成"); //
+				 * lblNewLabel_1.setText("CN:bmxcn.CYP.estado.PHP : st_runtime_down -> 2120s");
+				 * // container.pack(); // getShell().pack();
+				 * 
+				 * // Point computeSize =
+				 * scrolledComposite.getContent().computeSize(SWT.DEFAULT, // SWT.DEFAULT);
+				 * Point computeSize = alertC.computeSize(SWT.DEFAULT, SWT.DEFAULT); //
+				 * 不设置minsize 就不出现滚动条 scrolledComposite.setMinSize(computeSize);// 重新计算滚动条
 				 */
-				System.out.println("计时完成");
-				lblNewLabel_1.setText("CN:bmxcn.CYP.estado.PHP : st_runtime_down -> 2120s");
-				// container.pack();
-				// getShell().pack();
-				alertC.pack();// 重新计算整个alert部分的大小
-				// Point computeSize = scrolledComposite.getContent().computeSize(SWT.DEFAULT,
-				// SWT.DEFAULT);
-				Point computeSize = alertC.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-				// 不设置minsize 就不出现滚动条
-				scrolledComposite.setMinSize(computeSize);// 重新计算滚动条
 			}
 		};
-		Display.getDefault().syncExec(r);
-
-		//Display.getCurrent().asyncExec(r);
-
+		// TODO 非ui线程不能更新ui
+		// Display.getDefault().syncExec(r);
+		// Display.getCurrent().asyncExec(r);
 	}
 }

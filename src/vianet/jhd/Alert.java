@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Alert {
 
-	private String UID;
+	//private String UID;
 
 	private String name; // 可以给这个alert起个简单的名字
 	private String subject;// 邮件标题
@@ -33,14 +33,6 @@ public class Alert {
 
 	public enum Env {
 		yp, ys, yf
-	}
-
-	public String getUID() {
-		return UID;
-	}
-
-	public void setUID(String uID) {
-		UID = uID;
 	}
 
 	public String getName() {
